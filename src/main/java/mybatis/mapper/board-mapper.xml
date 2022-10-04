@@ -3,7 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="BoardMapper">
-  <select id="findAll">
+
+  <!-- 조회결과를 매핑할 클래스정보 등록: resultType="" -->
+  <select id="findAll" resultType="domain.dto.board2.Board2DTO">
   	select * from board2 
   	order by bno desc
   </select>

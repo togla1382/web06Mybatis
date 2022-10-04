@@ -27,7 +27,11 @@ public class BoardController extends HttpServlet {
 		//다중행 조회쿼리        //"namespace.id"
 		//다중행 처리결과를 List<각행의결과를 매핑하는 클래스>
 		List<Board2DTO> result=sqlSession.selectList("BoardMapper.findAll");
+		System.out.println("result 개수 : "+result.size());
 		sqlSession.close();
+		
+		//requestScope 저장소에 "list"이름으로 쿼리의 결과(List<Board2DTO>)를 저장
+		request.setAttribute("list", result);
 		
 		//응답할 페이지정보는 JSP파일로 지정해줄수있어요
 		String path="/WEB-INF/views/board/list.jsp";

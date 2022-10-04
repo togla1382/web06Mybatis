@@ -1,13 +1,53 @@
+<%@page import="java.util.List"%>
+<%@page import="domain.dto.board2.Board2DTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style type="text/css">
+		*{padding: 0;margin: 0}
+		h1{
+			width: 800px;
+			margin: 40px auto;
+		}
+		ul{
+			width: 800px;
+			margin: 0 auto;
+			display: grid;
+			grid-template-columns: 100px 300px 100px auto auto;
+			border-bottom: 1px solid #222; 
+		}
+		li{
+			list-style: none;
+			padding: 0.5em 1em;
+		}
+	</style>
 </head>
 <body>
 	<h1>게시글 페이지입니다.</h1>
+	<ul>
+		<li>글번호</li>
+		<li>제목</li>
+		<li>조회수</li>
+		<li>작성자</li>
+		<li>작성일</li>
+	</ul>
+	<%
+		for(Board2DTO dto : (List<Board2DTO>)request.getAttribute("list") ){
+	%>
+	<ul>
+		<li><%=dto.getBno() %> </li>
+		<li><%=dto.getTitle() %></li>
+		<li><%=dto.getReadCount() %></li>
+		<li><%=dto.getWriter() %></li>
+		<li><%=dto.getUpdatedDate() %></li>
+	</ul>
+	<%
+		}
+	%>
 	
 </body>
 </html>
