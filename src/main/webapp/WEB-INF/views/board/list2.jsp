@@ -2,7 +2,6 @@
 <%@page import="domain.dto.board2.Board2DTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +28,6 @@
 </head>
 <body>
 	<h1>게시글 페이지입니다.</h1>
-	<a href="write">글쓰기</a>
 	<ul>
 		<li>글번호</li>
 		<li>제목</li>
@@ -37,21 +35,19 @@
 		<li>작성자</li>
 		<li>작성일</li>
 	</ul>
-	<%-- <%
-		pageContext.getAttribute("");
-		request.getAttribute("");
-		session.getAttribute("");
-		application.getAttribute("");
-	%> --%>
-	<c:forEach var="dto" items="${list }">
+	<%
+		for(Board2DTO dto : (List<Board2DTO>)request.getAttribute("list") ){
+	%>
 	<ul>
-		<li>${dto.bno }</li>
-		<li>${dto.title }</li>
-		<li>${dto.readCount }</li>
-		<li>${dto.writer }</li>
-		<li>${dto.updatedDate }</li>
+		<li><%=dto.getBno() %> </li>
+		<li><%=dto.getTitle() %></li>
+		<li><%=dto.getReadCount() %></li>
+		<li><%=dto.getWriter() %></li>
+		<li><%=dto.getUpdatedDate() %></li>
 	</ul>
-	</c:forEach>
+	<%
+		}
+	%>
 	
 </body>
 </html>
