@@ -27,7 +27,7 @@
   </insert>
   <update id="update" >
   	update board2
-  	set title=#{content} , content=#{content}, updated_date=systimestamp
+  	set title=#{title} , content=#{content}, updated_date=systimestamp
   	where bno=#{bno}
   </update>
   <delete id="deleteById">
