@@ -46,7 +46,9 @@
 	<c:forEach var="dto" items="${list }">
 	<ul>
 		<li>${dto.bno }</li>
-		<li>${dto.title }</li>
+		<li>
+			<a href="detail?bno=${dto.bno }">${dto.title }</a>
+		</li>
 		<li>${dto.readCount }</li>
 		<li>${dto.writer }</li>
 		<li>${dto.updatedDate }</li>

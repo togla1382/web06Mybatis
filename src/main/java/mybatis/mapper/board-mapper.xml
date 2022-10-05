@@ -9,8 +9,13 @@
   	select * from board2 
   	order by bno desc
   </select>
+  <select id="findById" resultType="domain.dto.board2.Board2DTO">
+  	select * from board2 
+  	where bno=#{bno}
+  </select>
   <insert id="save">
   	insert into board2(bno, title, content, writer, updated_date)
   	values(seq_bo2.nextval, #{title}, #{content}, #{writer}, systimestamp)
   </insert>
+  
 </mapper>
