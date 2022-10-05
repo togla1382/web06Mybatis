@@ -12,10 +12,26 @@
   <select id="findById" resultType="domain.dto.board2.Board2DTO">
   	select * from board2 
   	where bno=#{bno}
+  	
   </select>
+  <update id="readCountPP">
+  	update board2
+  	set read_count=read_count+1
+  	where bno=#{bno}
+  </update>
+  
+  
   <insert id="save">
   	insert into board2(bno, title, content, writer, updated_date)
   	values(seq_bo2.nextval, #{title}, #{content}, #{writer}, systimestamp)
   </insert>
-  
+  <update id="update" >
+  	update board2
+  	set title=#{content} , content=#{content}, updated_date=systimestamp
+  	where bno=#{bno}
+  </update>
+  <delete id="deleteById">
+  	delete board2
+  	where bno=#{bno}
+  </delete>
 </mapper>

@@ -48,6 +48,8 @@
 		</li>
 		<li>
 			<button type="button" onclick="btbEditClicked();">수정</button>
+			<a href="delete?bno=${detail.bno }"><button type="button">삭제</button></a>
+			<a href="list"><button type="button" >목록보기</button></a>
 		</li>
 	</ul>
 	<!-- //////////////////////////////// -->
@@ -57,13 +59,17 @@
 			document.getElementById("def").style.display="none";
 			document.getElementById("fmt").style.display="block";
 		}
+		function btnCancelClicked(){
+			document.getElementById("def").style.display="block";
+			document.getElementById("fmt").style.display="none";
+		}
 	</script>
 	<!-- //////////////////////////////// -->
-	<form id="fmt">
+	<form id="fmt" action="update" method="post">
 		<ul>
 			<li>
 				<i>글번호</i>
-				<input type="text" value="${detail.bno }" readonly="readonly">
+				<input type="text" value="${detail.bno }" name="bno" readonly="readonly">
 			</li>
 			
 			<li>
@@ -82,14 +88,15 @@
 			</li>
 			<li>
 				<i>제목</i>
-				<input type="text" value="${detail.title }">
+				<input type="text" name="title" value="${detail.title }">
 			</li>
 			<li>
 				<i>내용</i>
-				<textarea style="width: 100%; height: 5em;" >${detail.content }</textarea>
+				<textarea style="width: 100%; height: 5em;" name="content">${detail.content }</textarea>
 			</li>
 			<li>
-				<button type="button">취소</button>
+				<button type="submit">수정완료</button>
+				<button type="button" onclick="btnCancelClicked()">취소</button>
 			</li>
 		</ul>
 	</form>

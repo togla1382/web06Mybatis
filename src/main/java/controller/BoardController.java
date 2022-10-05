@@ -46,11 +46,16 @@ public class BoardController extends HttpServlet {
 			service.save(request, response);
 		}else if(uri.equals(root+"/board/detail")) {
 			path=service.detail(request, response);
+		}else if(uri.equals(root+"/board/update")) {
+			path=service.update(request, response);
+		}else if(uri.equals(root+"/board/delete")) {
+			path=service.delete(request, response);
 		}
 		//End if()
 		if(path!=null)
 			request.getRequestDispatcher(path).forward(request, response);
-	}
+	}//End doGet()
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

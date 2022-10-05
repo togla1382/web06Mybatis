@@ -1,9 +1,11 @@
 package service.impl;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,16 +57,78 @@ public class BoardServiceProc implements BoardService {
 	}
 
 	@Override
-	public String detail(HttpServletRequest request, HttpServletResponse response) {
+	public String detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie[] cookies=request.getCookies();
+		boolean flag=true;
+		for(Cookie cookie:cookies) {
+			String n=cookie.getName();
+			String v=cookie.getValue();
+			System.out.println(n +" : "+ v);
+			if(n.equals("myCookie")) {
+				flag=false;
+			}
+		}
+		
+		String ip=request.getRemoteHost();
+		System.out.println("ip : "+ip);
+		
+		
 		long bno=Long.parseLong(request.getParameter("bno"));
 		SqlSession sqlSession=sqlSessionFactory.openSession();
 		//조회결과가 단일행 결과인경우
 		Board2DTO result=sqlSession.selectOne("BoardMapper.findById", bno);
+		String referer=request.getHeader("Referer");
+		System.out.println("Referer(detail이전페이지) : "+referer);
+		if(!referer.contains("detail") && flag ) {
+			sqlSession.update("BoardMapper.readCountPP", bno);
+			sqlSession.commit();
+			
+			Cookie cookie=new Cookie("myCookie", "쿠키에요");
+			cookie.setPath(request.getContextPath());
+			cookie.setMaxAge(60);
+			response.setCharacterEncoding("utf-8");
+			response.addCookie(cookie);
+		}
 		sqlSession.close();
 		
 		request.setAttribute("detail", result);
 		
 		return "/WEB-INF/views/board/detail.jsp";
+	}
+
+	@Override
+	public String update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long bno=Long.parseLong(request.getParameter("bno"));
+		String title=request.getParameter("title");
+		String content=request.getParameter("content");
+		
+		
+		//mapper에 전달할 data
+		Board2DTO dto=new Board2DTO();
+		dto.setBno(bno);
+		dto.setTitle(title);
+		dto.setContent(content);
+		
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+		sqlSession.update("BoardMapper.update", dto);
+		//sqlSession.commit();
+		sqlSession.close();
+		
+		//리턴페이지??? JSP이면 return "경로" 
+		response.sendRedirect("detail?bno="+bno);
+		return null;//path=null
+	}
+
+	@Override
+	public String delete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		long bno=Long.parseLong(request.getParameter("bno"));
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+		sqlSession.delete("BoardMapper.deleteById", bno);
+		sqlSession.close();
+		
+		response.sendRedirect("list");
+		return null;
 	}
 
 }
