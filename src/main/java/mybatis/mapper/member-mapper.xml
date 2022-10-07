@@ -13,5 +13,16 @@
 		select * from member2 
 		where email=#{email}
 	</select>
+	
+	<update id="updatePassByEmail">
+		update member2
+		set pass=#{pass}
+		where email=#{email}
+	</update>
+	
+	<delete id="deleteByEmail">
+		delete member2
+		where email=#{email}
+	</delete>
   
 </mapper>

@@ -14,4 +14,10 @@ public interface MemberService {
 
 	String logout(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException;
 
+	String detail(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException;
+
+	String update(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException;
+
+	String delete(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException;
+
 }

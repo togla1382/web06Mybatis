@@ -30,12 +30,21 @@ public class MemberController extends HttpServlet {
 			path="/WEB-INF/views/member/reg.jsp";
 		}else if( uri.equals(root+"/signin") ){
 			path="/WEB-INF/views/member/login.jsp";
+		}else if( uri.equals(root+"/signout") ) {
+			path=service.logout(request, response);
 		}else if( uri.equals(root+"/member/reg") ){
 			path=service.save(request, response);
 		}else if( uri.equals(root+"/member/login") ){
 			path=service.login(request, response);
-		}else if( uri.equals(root+"/signout") ) {
-			path=service.logout(request, response);
+		}else if( uri.equals(root+"/member/detail") ){
+			//logData세션이 존재할때 실행하는거 정상적입니다.
+			path=service.detail(request, response);
+		}else if( uri.equals(root+"/member/update") ){
+			//logData세션이 존재할때 실행하는거 정상적입니다.
+			path=service.update(request, response);
+		}else if( uri.equals(root+"/member/delete") ){
+			//logData세션이 존재할때 실행하는거 정상적입니다.
+			service.delete(request, response);
 		}
 		//end if
 		

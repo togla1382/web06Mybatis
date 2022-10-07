@@ -19,8 +19,9 @@
 		<a href="${root }/signin">로그인</a>
 	</c:if>
 	<c:if test="${not empty logData }">
-		<span>${logData.email }</span>
+		<%-- <span>${logData.email }</span> --%>
 		<span>${logData.name }</span>
+		<a href="${root }/member/detail">마이페이지</a>
 		<a href="${root }/signout">로그아웃</a>
 	</c:if>
 </div>
@@ -35,7 +36,8 @@
 		</c:when>
 		<c:otherwise>
 			<span>${logData.email }</span>
-			<span>${logData.name }</span>
+			<%-- <span>${logData.name }</span> --%>
+			<a href="${root }/member/detail">마이페이지</a>
 			<a href="${root }/signout">로그아웃</a>
 		</c:otherwise>
 	</c:choose>

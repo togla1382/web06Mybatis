@@ -13,6 +13,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import domain.dto.member.LogInfo;
 import domain.dto.member.MemberDTO;
 import domain.dto.member.MemberInsertDTO;
+import domain.dto.member.MemberUpdateDTO;
 import mybatis.MybatisConfig;
 import service.MemberService;
 import utils.PasswordEncoder;
@@ -61,7 +62,7 @@ public class MemberServiceProc implements MemberService {
 				//비밀번호 일치: 로그인 성공처리
 				//sessionScope 활용 : HttpSession 객체
 				HttpSession session=request.getSession();
-				session.setMaxInactiveInterval(60*5);
+				session.setMaxInactiveInterval(60*10);
 				session.setAttribute("aaa", "에이");
 				request.setAttribute("bbb", "비비");
 				
@@ -84,6 +85,63 @@ public class MemberServiceProc implements MemberService {
 		request.getSession().invalidate();//모든세션 제거
 		
 		response.sendRedirect( request.getContextPath() );
+		return null;
+	}
+
+	//회원 상세정보처리
+	@Override
+	public String detail(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		HttpSession session=request.getSession();
+		LogInfo logInfo=(LogInfo) session.getAttribute("logData");
+		String email=logInfo.getEmail();
+		
+		
+		SqlSession sqlSession=ssf.openSession();
+		MemberDTO result=sqlSession.selectOne("MemberMapper.findByEmail", email);
+		sqlSession.close();
+		
+		request.setAttribute("detail", result);
+		
+		
+		return "/WEB-INF/views/member/detail.jsp";
+	}
+
+	//비밀번호 수정
+	@Override
+	public String update(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session=request.getSession();
+		LogInfo logData=(LogInfo)session.getAttribute("logData");
+		String email=logData.getEmail();
+		String newPass=PasswordEncoder.encode(request.getParameter("newPass"));
+		SqlSession sqlSession=ssf.openSession(true);
+		//쿼리실행: member-mapper.xml
+		sqlSession.update("MemberMapper.updatePassByEmail", new MemberUpdateDTO(email, newPass));
+		sqlSession.close();
+		
+		session.invalidate();//모든세션해제
+		response.sendRedirect(request.getContextPath()+"/signin?retry");
+		return null;
+	}
+	
+	
+	//회원삭제
+	@Override
+	public String delete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		//String email=((LogInfo)request.getSession().getAttribute("logData")).getEmail();
+
+		HttpSession session=request.getSession();
+		LogInfo principal=(LogInfo) session.getAttribute("logData");
+		String email=principal.getEmail();
+		
+		SqlSession sqlSession=ssf.openSession(true);
+		sqlSession.delete("MemberMapper.deleteByEmail", email);
+		sqlSession.close();
+		session.invalidate();//세션제거
+		response.sendRedirect(request.getContextPath());//인덱스 페이지
 		return null;
 	}
 
